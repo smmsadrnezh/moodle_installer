@@ -34,8 +34,6 @@ install_docker() {
 }
 
 download_moodle_image() {
-    echo_run "mkdir -p ~/docker/moodle/"
-    echo_run "curl -sSL https://raw.githubusercontent.com/bitnami/containers/main/bitnami/moodle/docker-compose.yml > ~/docker/moodle/docker-compose.yml"
     echo 'nameserver 178.22.122.100' >> /etc/resolv.conf
     echo 'nameserver 185.51.200.2' >> /etc/resolv.conf
     echo_run "docker pull bitnami/moodle:latest"
@@ -45,7 +43,11 @@ install_moodle() {
     echo "Find these lines and change them if required:"
     echo "- '80:8080'"
     echo "- '443:8443'"
-    echo "nano ~/docker/moodle/docker-compose.yml"
+    echo "nano docker-compose.yml"
+    echo_run "mkdir -p ~/docker/moodle/"
+    echo_run "cp docker-compose.yml ~/docker/moodle/"
+    echo_run "mkdir /srv/{moodle,moodledata,mariadb}"
+    echo_run "mkdir /srv/mariadb/data/"
     echo_run "cd ~/docker/moodle/"
     echo_run "docker-compose up -d"
 }
